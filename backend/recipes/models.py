@@ -5,7 +5,8 @@ from users.models import User
 
 
 class Tag(models.Model):
-    """ Tag to specialize recipe. """
+    """Tag to specialize recipe."""
+
     name = models.CharField(
         max_length=200, unique=True, verbose_name='Название'
     )
@@ -21,7 +22,8 @@ class Tag(models.Model):
 
 
 class Ingredient(models.Model):
-    """ Ingredient to put in the recipe. """
+    """Ingredient to put in the recipe."""
+
     name = models.CharField(max_length=200, verbose_name='Название')
     measurement_unit = models.CharField(
         max_length=200, verbose_name='Единица измерения'
@@ -64,7 +66,8 @@ class Recipe(models.Model):
 
 
 class RecipeIngredient(models.Model):
-    """ Representation of ingredient in the recipe (with amount). """
+    """Representation of ingredient in the recipe (with amount)."""
+
     recipe = models.ForeignKey(
         Recipe, on_delete=models.CASCADE, verbose_name='Рецепт'
     )

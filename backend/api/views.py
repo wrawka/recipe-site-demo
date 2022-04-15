@@ -139,7 +139,8 @@ class RecipesViewSet(ModelViewSet):
         return recipe
 
     def remove_recipe(self, request, pk=None) -> None:
-        """ Validates the recipe vs. collection & removes if present. """
+        """Validates the recipe vs. collection & removes if present."""
+
         model_type, name = self.COLLECTIONS.get(self.action)
         recipe = get_object_or_404(Recipe, id=pk)
         collection, _ = model_type.objects.get_or_create(user=request.user)
@@ -153,30 +154,35 @@ class RecipesViewSet(ModelViewSet):
 
     @action(detail=True, name="Add to shopping cart", methods=['POST'])
     def shopping_cart(self, request, pk=None):
-        """ Adds a recipe to the shopping cart. """
+        """Adds a recipe to the shopping cart."""
+
         recipe = self.add_recipe(request, pk=pk)
         return Response(RecipeLiteSerializer(recipe).data)
 
     @shopping_cart.mapping.delete
     def remove_from_shopping_cart(self, request, pk=None):
-        """ Removes a recipe from the shopping cart. """
+        """Removes a recipe from the shopping cart."""
+
         return self.remove_recipe(request, pk=pk)
 
     @action(detail=True, name="Add to favourites", methods=['POST'])
     def favorite(self, request, pk=None):
-        """ Adds a recipe to favourites. """
+        """Adds a recipe to favourites."""
+
         recipe = self.add_recipe(request, pk=pk)
         return Response(RecipeLiteSerializer(recipe).data)
 
     @favorite.mapping.delete
     def remove_from_favourites(self, request, pk=None):
-        """ Removes a recipe from favourites. """
+        """Removes a recipe from favourites."""
+
         self.remove_recipe(request, pk=pk)
         return Response(status=HTTP_204_NO_CONTENT)
 
     @action(detail=False)
     def download_shopping_cart(self, request):
-        """ Returns the shopping cart aggregated contents as a file. """
+        """Returns the shopping cart aggregated contents as a file."""
+
         recipes = (
             request.user.shoppingcart.recipes.prefetch_related('ingredients')
         )
